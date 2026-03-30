@@ -216,7 +216,6 @@
       </tr>
       <tr>
         <td>2</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('iec62304/sw-requirements/customer-needs.md','docs/iec62304/sw-requirements/customer-needs.md')">docs/iec62304/sw-requirements/customer-needs.md</a></div></td>
         <td class="why">Customer needs analysis: who uses this and why. <strong>The foundation for every requirement.</strong></td>
       </tr>
     </table>
@@ -236,17 +235,14 @@
       <tr><th>#</th><th>Document</th><th>Why Read This</th></tr>
       <tr>
         <td>3</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('plans/plan-playsight-vision-platform.md','docs/plans/plan-playsight-vision-platform.md')">docs/plans/plan-playsight-vision-platform.md</a></div></td>
         <td class="why">Vision platform design: optical system, game mechanics, screening algorithms. <strong>The core product architecture.</strong></td>
       </tr>
       <tr>
         <td>4</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('plans/plan-playsight-bowl-perimeter.md','docs/plans/plan-playsight-bowl-perimeter.md')">docs/plans/plan-playsight-bowl-perimeter.md</a></div></td>
         <td class="why">Bowl perimeter design: hardware layout, LED matrix, eye tracking.</td>
       </tr>
       <tr>
         <td>5</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('plans/plan-pc-sil.md','docs/plans/plan-pc-sil.md')">docs/plans/plan-pc-sil.md</a></div></td>
         <td class="why">PC-based SIL testing plan. How to validate screening logic without physical hardware.</td>
       </tr>
     </table>
@@ -266,7 +262,6 @@
       <tr><th>#</th><th>Document</th><th>Why Read This</th></tr>
       <tr>
         <td>6</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('iec62304/sw-requirements/phased-deliverables.md','docs/iec62304/sw-requirements/phased-deliverables.md')">docs/iec62304/sw-requirements/phased-deliverables.md</a></div></td>
         <td class="why">Phased deliverables mapped to IEC 62304 lifecycle. <strong>Shows what is due and when.</strong></td>
       </tr>
     </table>
@@ -286,7 +281,6 @@
       <tr><th>#</th><th>Document</th><th>Why Read This</th></tr>
       <tr>
         <td>7</td>
-        <td><div class="doc-cell"><span class="check" onclick="toggle(this)"></span><a onclick="openDoc('plans/next-session-preconditions.md','docs/plans/next-session-preconditions.md')">docs/plans/next-session-preconditions.md</a></div></td>
         <td class="why">Session preconditions and setup checklist. <strong>Read before every work session.</strong></td>
       </tr>
     </table>
@@ -311,6 +305,77 @@
 </div>
 
 <script>
+
+  const INLINE_DOCS = {
+    "INDEX.md": `# Documentation Index
+
+## IEC 62304 — Software Lifecycle
+
+| Clause | Document | Path |
+|--------|----------|------|
+| 5.1 | Software Development Plan | \`iec62304/swdp/\` |
+| 5.2 | Software Requirements | \`iec62304/sw-requirements/\` |
+| 5.3 | Software Architecture | \`iec62304/sw-architecture/\` |
+| 5.4 | Software Detailed Design | \`iec62304/sw-detailed-design/\` |
+| 5.5 | Software Unit Implementation + Verification | \`iec62304/sw-unit-verification/\` |
+| 5.6 | Software Integration Testing | \`iec62304/sw-integration-test/\` |
+| 5.7 | Software System Testing | \`iec62304/sw-system-test/\` |
+| 5.8 | Software Release | \`iec62304/sw-release/\` |
+| 6 | Software Maintenance | \`iec62304/sw-maintenance/\` |
+| 7 | Software Configuration Management | \`iec62304/sw-configuration-management/\` |
+| 8 | Software Problem Resolution | \`iec62304/sw-problem-resolution/\` |
+| 9 | Software Risk Management (→ ISO 14971) | \`iso14971/\` |
+
+## ISO 14971 — Risk Management
+
+| Document | Path |
+|----------|------|
+| Risk Management Plan | \`iso14971/risk-management-plan/\` |
+| Risk Analysis (FMEA, FTA, HARA) | \`iso14971/risk-analysis/\` |
+| Risk Evaluation | \`iso14971/risk-evaluation/\` |
+| Risk Control Measures | \`iso14971/risk-control/\` |
+| Risk Management Report | \`iso14971/risk-management-report/\` |
+
+## ISO 13485 — Quality Management
+
+| Document | Path |
+|----------|------|
+| QMS Overview | \`iso13485/qms/\` |
+| Design Control (Design Input/Output/Review/Verification/Validation) | \`iso13485/design-control/\` |
+
+## IEC 60601 — Electrical Safety
+
+| Document | Path |
+|----------|------|
+| Electrical Safety Notes | \`iec60601/electrical-safety/\` |
+| Alarm Systems (IEC 60601-1-8) | \`iec60601/alarm-systems/\` |
+
+## Safety
+
+| Document | Path |
+|----------|------|
+| Safety Concept | \`safety/concept/\` |
+| Safety Plan | \`safety/plan/\` |
+| Safety Analysis | \`safety/analysis/\` |
+| Safety Verification | \`safety/verification/\` |
+
+## Other
+
+| Document | Path |
+|----------|------|
+| Plans | \`plans/\` |
+| Guides | \`guides/\` |
+| Lessons Learned | \`lessons-learned/\` |
+| Test Results | \`test-results/\` |
+| Standards Reference | \`standards/\` |
+`
+  };
+
+  function _loadDoc(url) {
+    if (INLINE_DOCS[url]) return Promise.resolve(INLINE_DOCS[url]);
+    return fetch(url).then(function(r) { if (!r.ok) throw new Error(r.status + ' ' + r.statusText); return r.text(); });
+  }
+
   /* ===== Markdown Parser (zero dependencies) ===== */
   function parseMd(src) {
     // Strip HITL lock boilerplate and frontmatter
@@ -427,11 +492,7 @@
     overlay.classList.add('open');
     document.body.classList.add('viewer-open');
 
-    fetch(relPath)
-      .then(r => {
-        if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
-        return r.text();
-      })
+    _loadDoc(relPath)
       .then(text => {
         if (relPath.endsWith('.md')) {
           content.innerHTML = parseMd(text);
